@@ -49,12 +49,34 @@ public class ProductServlet extends HttpServlet {
 		response.setCharacterEncoding("utf-8");
 
 		// 2. 获取参数
-		String name = request.getParameter("name");
-		double price = Double.parseDouble(request.getParameter("price"));
-		int amount = Integer.parseInt(request.getParameter("amount"));
+		//String name = request.getParameter("name");
+		//double price = Double.parseDouble(request.getParameter("price"));
+		//int amount = Integer.parseInt(request.getParameter("amount"));
+		Product product = new Product();
+		try {
+			// javabean 内省
+			BeanInfo beanInfo = Introspector.getBeanInfo(product.getClass());
+			PropertyDescriptor[] descriptors = beanInfo.getPropertyDescriptors();
+			for (PropertyDescriptor descriptor : descriptors) {
+				Method method = descriptor.getWriteMethod(); // setter方法
+				if (method != null) {
+					Class<?>[] types = method.getParameterTypes();
+					if (null != types && types[0].equals(String.class)) { // 参数时String类型
+						method.invoke(customer, request.getParameter(descriptor.getName()));
+					}
+					if (null != types && types[0].equals(Double.class)) { // 参数时Double类型
+						method.invoke(customer, Double.parseDouble(request.getParameter(descriptor.getName())));
+					}
+					if (null != types && types[0].equals(Integer.class)) { // 参数时Integer类型
+						method.invoke(customer, Integer.parseInt(request.getParameter(descriptor.getName())));
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		// 3.调用service完成业务逻辑
-		Product product = new Product(null, name, price, amount);
 		Product dbProduct = productService.add(product);
 
 		// 4.页面跳转
