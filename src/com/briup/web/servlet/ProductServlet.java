@@ -61,6 +61,9 @@ public class ProductServlet extends HttpServlet {
 				Method method = descriptor.getWriteMethod(); // setter方法
 				if (method != null) {
 					Class<?>[] types = method.getParameterTypes();
+					if (null != types && types[0].equals(Long.class)) { // 参数时Long类型，id
+						method.invoke(customer, null);
+					}
 					if (null != types && types[0].equals(String.class)) { // 参数时String类型
 						method.invoke(customer, request.getParameter(descriptor.getName()));
 					}
