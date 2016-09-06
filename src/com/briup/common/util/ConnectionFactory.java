@@ -17,7 +17,7 @@ public class ConnectionFactory {
 	
 	static {
 		driver = "com.mysql.jdbc.Driver";
-		url="jdbc:mysql://127.0.0.1:3306/test";
+		url="jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=UTF-8";
 		user = "root";
 		password = "123";
 		
