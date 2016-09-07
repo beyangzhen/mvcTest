@@ -54,7 +54,7 @@ public class ProductServlet extends HttpServlet {
 		//int amount = Integer.parseInt(request.getParameter("amount"));
 		Product product = new Product();
 		try {
-			// javabean 内省
+			// javabean 内省，但性能不高
 			BeanInfo beanInfo = Introspector.getBeanInfo(product.getClass());
 			PropertyDescriptor[] descriptors = beanInfo.getPropertyDescriptors();
 			for (PropertyDescriptor descriptor : descriptors) {
